@@ -20,7 +20,8 @@ class ProjectsTableViewController: UITableViewController {
         setupView()
         
         // Table view cell registry
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
+        tableView.register(ProjectTableViewCell.self, forCellReuseIdentifier: cellID)
+        tableView.separatorStyle = .none
     }
     
     private func setupView() {
@@ -59,20 +60,24 @@ class ProjectsTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! ProjectTableViewCell
 
-        // Configure the cell...
+        cell.projectTextView.text = "Project"
+        cell.infoLabel.text = "3 tasks completed today"
 
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 120
     }
 
     /*
