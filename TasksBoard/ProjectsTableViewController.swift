@@ -10,6 +10,10 @@ import UIKit
 class ProjectsTableViewController: UITableViewController {
     
     private let cellID = "cell"
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,9 +36,23 @@ class ProjectsTableViewController: UITableViewController {
         appearence.configureWithOpaqueBackground()
         appearence.backgroundColor = UIColor(red: 120/255, green: 110/255, blue: 232/255, alpha: 1)
         appearence.titleTextAttributes = [.foregroundColor: UIColor.white]
+        appearence.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.standardAppearance = appearence
         navigationItem.scrollEdgeAppearance = appearence
         navigationItem.compactAppearance = appearence
+        
+        // Set navigation bar large title
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .white
+        
+        // Set add button to navigation bar
+        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addProject))
+        rightBarButtonItem.tintColor = .white
+        navigationItem.rightBarButtonItem = rightBarButtonItem
+    }
+    
+    @objc private func addProject() {
+        
     }
 
     // MARK: - Table view data source
