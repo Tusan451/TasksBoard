@@ -1,28 +1,23 @@
 //
-//  ProjectsTableViewController.swift
+//  TasksTableViewController.swift
 //  TasksBoard
 //
-//  Created by Olegio on 29.09.2022.
+//  Created by Olegio on 02.10.2022.
 //
 
 import UIKit
 
-class ProjectsTableViewController: UITableViewController {
+class TasksTableViewController: UITableViewController {
     
-    private let cellID = "cell"
-    
-    private var detailedViewSegue: UIStoryboardSegue!
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
+    private let cellID = "TaskCell"
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupView()
         
         // Table view cell registry
-        tableView.register(ProjectTableViewCell.self, forCellReuseIdentifier: cellID)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.separatorStyle = .none
     }
     
@@ -49,45 +44,33 @@ class ProjectsTableViewController: UITableViewController {
         navigationController?.navigationBar.tintColor = .white
         
         // Set add button to navigation bar
-        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addProject))
+        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTask))
         rightBarButtonItem.tintColor = .white
         navigationItem.rightBarButtonItem = rightBarButtonItem
     }
     
-    @objc private func addProject() {
+    @objc private func addTask() {
         
-    }
-    
-    @objc private func detailedViewAction() {
-        detailedViewSegue = UIStoryboardSegue(identifier: "DetailedView", source: ProjectsTableViewController(), destination: TasksTableViewController(), performHandler: {
-            self.show(TasksTableViewController(), sender: nil)
-        })
-        detailedViewSegue.perform()
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        // #warning Incomplete implementation, return the number of rows
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! ProjectTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
-        cell.projectTextView.text = "Project"
-        cell.infoLabel.text = "3 tasks completed today"
-        cell.detailButton.addTarget(self, action: #selector(detailedViewAction), for: .touchUpInside)
+        // Configure the cell...
 
         return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120
     }
 
     /*

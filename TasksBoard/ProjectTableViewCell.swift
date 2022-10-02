@@ -48,7 +48,7 @@ class ProjectTableViewCell: UITableViewCell, UITextViewDelegate {
         config.imagePlacement = .all
         config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         detailButton.configuration = config
-        detailButton.addTarget(self, action: #selector(detailedViewAction), for: .touchUpInside)
+//        detailButton.addTarget(self, action: #selector(detailedViewAction), for: .touchUpInside)
         
         // Add UI components
         cellView.addSubview(projectTextView)
@@ -75,10 +75,6 @@ class ProjectTableViewCell: UITableViewCell, UITextViewDelegate {
         detailButton.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
         detailButton.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -16).isActive = true
         detailButton.leadingAnchor.constraint(equalTo: projectTextView.trailingAnchor, constant: 12).isActive = true
-    }
-    
-    @objc private func detailedViewAction() {
-        
     }
     
     required init?(coder: NSCoder) {
