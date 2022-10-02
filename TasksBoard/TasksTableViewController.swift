@@ -17,7 +17,7 @@ class TasksTableViewController: UITableViewController {
         setupView()
         
         // Table view cell registry
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
+        tableView.register(TaskTableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.separatorStyle = .none
     }
     
@@ -56,21 +56,27 @@ class TasksTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 4
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! TaskTableViewCell
 
-        // Configure the cell...
+        cell.taskLabel.text = "Task"
 
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Title"
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 105
     }
 
     /*

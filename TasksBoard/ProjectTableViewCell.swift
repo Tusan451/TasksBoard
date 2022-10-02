@@ -15,7 +15,7 @@ class ProjectTableViewCell: UITableViewCell, UITextViewDelegate {
     let detailButton = UIButton(type: .system)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super .init(style: style, reuseIdentifier: reuseIdentifier)
         
         contentView.backgroundColor = UIColor(red: 246/255, green: 248/255, blue: 249/255, alpha: 1)
         
@@ -48,7 +48,6 @@ class ProjectTableViewCell: UITableViewCell, UITextViewDelegate {
         config.imagePlacement = .all
         config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         detailButton.configuration = config
-//        detailButton.addTarget(self, action: #selector(detailedViewAction), for: .touchUpInside)
         
         // Add UI components
         cellView.addSubview(projectTextView)
@@ -78,7 +77,7 @@ class ProjectTableViewCell: UITableViewCell, UITextViewDelegate {
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        super .init(coder: coder)
         fatalError("init(coder:) has not been implemented")
     }
 }
