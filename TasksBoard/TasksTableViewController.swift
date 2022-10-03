@@ -10,6 +10,8 @@ import UIKit
 class TasksTableViewController: UITableViewController {
     
     private let cellID = "TaskCell"
+    
+    private var addTaskSegue: UIStoryboardSegue!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +52,10 @@ class TasksTableViewController: UITableViewController {
     }
     
     @objc private func addTask() {
-        
+        addTaskSegue = UIStoryboardSegue(identifier: "addTask", source: TasksTableViewController(), destination: NewTaskViewController(), performHandler: {
+            self.show(NewTaskViewController(), sender: nil)
+        })
+        addTaskSegue.perform()
     }
 
     // MARK: - Table view data source

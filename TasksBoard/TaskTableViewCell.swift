@@ -28,7 +28,7 @@ class TaskTableViewCell: UITableViewCell {
         
         // Set attributes to taskLabel
         taskLabel.translatesAutoresizingMaskIntoConstraints = false
-        taskLabel.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        taskLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         
         // Set attributes to mark
         mark.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +71,7 @@ class TaskTableViewCell: UITableViewCell {
         
         statusLabel.topAnchor.constraint(equalTo: taskLabel.bottomAnchor, constant: 12).isActive = true
         statusLabel.leadingAnchor.constraint(equalTo: mark.trailingAnchor, constant: 12).isActive = true
-        statusLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        statusLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
     }
     
     required init?(coder: NSCoder) {
