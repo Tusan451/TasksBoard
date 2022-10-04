@@ -17,6 +17,8 @@ class NewTaskViewController: UIViewController, UITextViewDelegate {
     let lowLabel = UILabel(frame: CGRect(x: 20, y: 0, width: 20, height: 20))
     let mediumLabel = UILabel(frame: CGRect(x: 20, y: 0, width: 20, height: 20))
     let highLabel = UILabel(frame: CGRect(x: 20, y: 0, width: 20, height: 20))
+    let cancelButton = UIButton(frame: CGRect(x: 20, y: 0, width: UIScreen.main.bounds.size.width - 20, height: 43))
+    let addButton = UIButton(frame: CGRect(x: 20, y: 0, width: UIScreen.main.bounds.size.width - 20, height: 43))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +34,8 @@ class NewTaskViewController: UIViewController, UITextViewDelegate {
         setupLowLabel()
         setupMediumLabel()
         setupHighLabel()
+        setupCancelButton()
+        setupAddButton()
     }
     
     private func setupNavigationBar() {
@@ -92,7 +96,7 @@ class NewTaskViewController: UIViewController, UITextViewDelegate {
     private func setupRangSlider() {
         rangSlider.translatesAutoresizingMaskIntoConstraints = false
         rangSlider.minimumValue = 0
-        rangSlider.maximumValue = 3
+        rangSlider.maximumValue = 5
         rangSlider.value = 1
         rangSlider.minimumTrackTintColor = UIColor(red: 101/255, green: 194/255, blue: 172/255, alpha: 1)
         
@@ -107,12 +111,13 @@ class NewTaskViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc private func sliderChanged(slider: UISlider) {
+        
         switch slider.value {
-        case let x where x <= 1:
-            rangSlider.minimumTrackTintColor = UIColor(red: 101/255, green: 194/255, blue: 172/255, alpha: 1)
         case let x where x <= 2:
+            rangSlider.minimumTrackTintColor = UIColor(red: 101/255, green: 194/255, blue: 172/255, alpha: 1)
+        case let x where x <= 4:
             rangSlider.minimumTrackTintColor = UIColor(red: 242/255, green: 191/255, blue: 66/255, alpha: 1)
-        case let x where x <= 3:
+        case let x where x <= 5:
             rangSlider.minimumTrackTintColor = UIColor(red: 236/255, green: 96/255, blue: 103/255, alpha: 1)
         default:
             break
@@ -156,6 +161,44 @@ class NewTaskViewController: UIViewController, UITextViewDelegate {
         
         highLabel.topAnchor.constraint(equalTo: taskView.bottomAnchor, constant: 16).isActive = true
         highLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
+    }
+    
+    // Set attributes to cancelButton
+    private func setupCancelButton() {
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        cancelButton.tintColor = .white
+        var config = UIButton.Configuration.filled()
+        config.title = "Cancel"
+        config.attributedTitle?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        config.cornerStyle = .capsule
+        config.baseBackgroundColor = UIColor(red: 172/255, green: 184/255, blue: 191/255, alpha: 1)
+        cancelButton.configuration = config
+        
+        self.view.addSubview(cancelButton)
+        
+        cancelButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -20).isActive = true
+        cancelButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
+        cancelButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
+        cancelButton.heightAnchor.constraint(equalToConstant: 43).isActive = true
+    }
+    
+    // Set attributes to addButton
+    private func setupAddButton() {
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.tintColor = .white
+        var config = UIButton.Configuration.filled()
+        config.title = "Add task"
+        config.attributedTitle?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        config.cornerStyle = .capsule
+        config.baseBackgroundColor = UIColor(red: 120/255, green: 110/255, blue: 232/255, alpha: 1)
+        addButton.configuration = config
+        
+        self.view.addSubview(addButton)
+        
+        addButton.bottomAnchor.constraint(equalTo: cancelButton.topAnchor, constant: -12).isActive = true
+        addButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
+        addButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
+        addButton.heightAnchor.constraint(equalToConstant: 43).isActive = true
     }
     
 
