@@ -10,6 +10,7 @@
 		3EDFCE09D5EE05DEA09576E4 /* Pods_TasksBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBF2D527D9AABFBCCE581B69 /* Pods_TasksBoard.framework */; };
 		E0015A2628E606CB003D953D /* ProjectsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0015A2528E606CB003D953D /* ProjectsTableViewController.swift */; };
 		E00795AA28EC94C000F44F92 /* CurrentTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00795A928EC94C000F44F92 /* CurrentTaskViewController.swift */; };
+		E00795AC28EC9D9300F44F92 /* Data Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00795AB28EC9D9300F44F92 /* Data Model.swift */; };
 		E055166028E5E75E00C1E0F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E055165F28E5E75E00C1E0F6 /* AppDelegate.swift */; };
 		E055166228E5E75E00C1E0F6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E055166128E5E75E00C1E0F6 /* SceneDelegate.swift */; };
 		E055166928E5E76000C1E0F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E055166828E5E76000C1E0F6 /* Assets.xcassets */; };
@@ -25,6 +26,7 @@
 		DBF2D527D9AABFBCCE581B69 /* Pods_TasksBoard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TasksBoard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0015A2528E606CB003D953D /* ProjectsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsTableViewController.swift; sourceTree = "<group>"; };
 		E00795A928EC94C000F44F92 /* CurrentTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTaskViewController.swift; sourceTree = "<group>"; };
+		E00795AB28EC9D9300F44F92 /* Data Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data Model.swift"; sourceTree = "<group>"; };
 		E055165C28E5E75E00C1E0F6 /* TasksBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TasksBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E055165F28E5E75E00C1E0F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E055166128E5E75E00C1E0F6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				E0D9BA7E28E9E77D00A96081 /* TaskTableViewCell.swift */,
 				E0CF55FF28EAF6BE003638B0 /* NewTaskViewController.swift */,
 				E00795A928EC94C000F44F92 /* CurrentTaskViewController.swift */,
+				E00795AB28EC9D9300F44F92 /* Data Model.swift */,
 			);
 			path = TasksBoard;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 			files = (
 				E055166028E5E75E00C1E0F6 /* AppDelegate.swift in Sources */,
 				E0CF560028EAF6BE003638B0 /* NewTaskViewController.swift in Sources */,
+				E00795AC28EC9D9300F44F92 /* Data Model.swift in Sources */,
 				E0D9BA7D28E9DDEB00A96081 /* TasksTableViewController.swift in Sources */,
 				E0D9BA7F28E9E77D00A96081 /* TaskTableViewCell.swift in Sources */,
 				E055166228E5E75E00C1E0F6 /* SceneDelegate.swift in Sources */,
