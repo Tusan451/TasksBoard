@@ -24,6 +24,22 @@ class ProjectsTableViewController: UITableViewController {
         // Table view cell registry
         tableView.register(ProjectTableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.separatorStyle = .none
+        
+        // Create objects
+        let projectOne = Project()
+        projectOne.name = "Project One"
+        
+        let projectTwo = Project(value: ["Project Two", [["First Task", TaskPriority.low], ["Second Task", TaskPriority.medium]]])
+        
+        let firstTask = Task()
+        firstTask.name = "Task One"
+        firstTask.taskPriority = .low
+        
+        let secondTask = Task(value: ["Task Two", TaskCategory.new, TaskPriority.medium])
+        let thirdTask = Task(value: ["name": "Task three", "taskPriority": TaskPriority.high])
+        
+        projectOne.tasks.append(firstTask)
+        projectOne.tasks.insert(contentsOf: [secondTask, thirdTask], at: 1)
     }
     
     private func setupView() {
