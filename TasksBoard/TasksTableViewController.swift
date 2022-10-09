@@ -9,10 +9,21 @@ import UIKit
 
 class TasksTableViewController: UITableViewController {
     
+    private let currentProject: Project?
+    
     private let cellID = "TaskCell"
     
     private var addTaskSegue: UIStoryboardSegue!
-
+    
+    init(currentProject: Project?) {
+        self.currentProject = currentProject
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,7 +40,7 @@ class TasksTableViewController: UITableViewController {
     }
     
     private func setupNavigationBar() {
-        title = "My Projects"
+        title = currentProject?.name
         
         // Set navigation bar basic settings
         let appearence = UINavigationBarAppearance()
@@ -52,7 +63,7 @@ class TasksTableViewController: UITableViewController {
     }
     
     @objc private func addTask() {
-        addTaskSegue = UIStoryboardSegue(identifier: "addTask", source: TasksTableViewController(), destination: NewTaskViewController(), performHandler: {
+        addTaskSegue = UIStoryboardSegue(identifier: "addTask", source: TasksTableViewController(currentProject: nil), destination: NewTaskViewController(), performHandler: {
             self.show(NewTaskViewController(), sender: nil)
         })
         addTaskSegue.perform()

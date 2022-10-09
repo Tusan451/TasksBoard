@@ -6,8 +6,12 @@
 //
 
 import UIKit
+import RealmSwift
 
 class ProjectsTableViewController: UITableViewController {
+    
+    var projects: Results<Project>!
+    var projectToSend: Project?
     
     private let cellID = "cell"
     
@@ -25,21 +29,29 @@ class ProjectsTableViewController: UITableViewController {
         tableView.register(ProjectTableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.separatorStyle = .none
         
-        // Create objects
-        let projectOne = Project()
-        projectOne.name = "Project One"
+        // Init objects from Realm
+        projects = realm.objects(Project.self)
         
-        let projectTwo = Project(value: ["Project Two", [["First Task", TaskPriority.low], ["Second Task", TaskPriority.medium]]])
-        
-        let firstTask = Task()
-        firstTask.name = "Task One"
-        firstTask.taskPriority = .low
-        
-        let secondTask = Task(value: ["Task Two", TaskCategory.new, TaskPriority.medium])
-        let thirdTask = Task(value: ["name": "Task three", "taskPriority": TaskPriority.high])
-        
-        projectOne.tasks.append(firstTask)
-        projectOne.tasks.insert(contentsOf: [secondTask, thirdTask], at: 1)
+//        // Create objects
+//        let projectOne = Project()
+//        projectOne.name = "Project One"
+//
+//        let projectTwo = Project(value: ["Project Two", [["First Task", TaskCategory.new, TaskPriority.low], ["Second Task", TaskCategory.new, TaskPriority.medium]]])
+//
+//        let firstTask = Task()
+//        firstTask.name = "Task One"
+//        firstTask.taskPriority = .low
+//
+//        let secondTask = Task(value: ["Task Two", TaskCategory.new, TaskPriority.medium])
+//        let thirdTask = Task(value: ["name": "Task three", "taskCategory": TaskCategory.new, "taskPriority": TaskPriority.high])
+//
+//        projectOne.tasks.append(firstTask)
+//        projectOne.tasks.insert(contentsOf: [secondTask, thirdTask], at: 1)
+//
+//        // Save objects to Realm
+//        DispatchQueue.main.async {
+//            StorageManager.saveProject([projectOne, projectTwo])
+//        }
     }
     
     private func setupView() {
@@ -74,30 +86,31 @@ class ProjectsTableViewController: UITableViewController {
         
     }
     
-    @objc private func detailedViewAction() {
-        detailedViewSegue = UIStoryboardSegue(identifier: "DetailedView", source: ProjectsTableViewController(), destination: TasksTableViewController(), performHandler: {
-            self.show(TasksTableViewController(), sender: nil)
+    @objc private func detailedViewAction(sender: UIButton) {
+        let buttonRow = sender.tag
+        projectToSend = projects[buttonRow]
+        let tasksVC = TasksTableViewController(currentProject: projectToSend)
+        detailedViewSegue = UIStoryboardSegue(identifier: "DetailedView", source: ProjectsTableViewController(), destination: tasksVC, performHandler: {
+            self.show(self.detailedViewSegue.destination, sender: UIButton.self)
         })
         detailedViewSegue.perform()
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return projects.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! ProjectTableViewCell
 
-        cell.projectTextView.text = "Project"
-        cell.infoLabel.text = "3 tasks completed today"
-        cell.detailButton.addTarget(self, action: #selector(detailedViewAction), for: .touchUpInside)
+        let project = projects[indexPath.row]
+        
+        cell.projectTextView.text = project.name
+        cell.infoLabel.text = "\(project.tasks.count) tasks"
+        cell.detailButton.tag = indexPath.row
+        cell.detailButton.addTarget(self, action: #selector(self.detailedViewAction), for: .touchUpInside)
 
         return cell
     }
@@ -106,14 +119,15 @@ class ProjectsTableViewController: UITableViewController {
         return 120
     }
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        guard segue.identifier == "DetailedView" else { return }
+//        if let indexPath = tableView.indexPathForSelectedRow {
+//            let project = projects[indexPath.row]
+//            let tasksVC = segue.destination as! TasksTableViewController
+//            tasksVC.currentProject = project
+//        }
+//    }
 }
