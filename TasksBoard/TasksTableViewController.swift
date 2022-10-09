@@ -6,10 +6,18 @@
 //
 
 import UIKit
+import RealmSwift
 
 class TasksTableViewController: UITableViewController {
     
-    private let currentProject: Project?
+    // Recieved object from ProjectsTableViewController
+    private let currentProject: Project!
+    
+    // Collections for filter tasks in interface
+    var newTasks: List<Task> = List()
+    var inProgressTasks: List<Task> = List()
+    var reviewTasks: List<Task> = List()
+    var doneTasks: List<Task> = List()
     
     private let cellID = "TaskCell"
     
@@ -32,6 +40,9 @@ class TasksTableViewController: UITableViewController {
         // Table view cell registry
         tableView.register(TaskTableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.separatorStyle = .none
+        
+        // Filtering tasks by category
+        filteringTasks()
     }
     
     private func setupView() {
@@ -68,6 +79,19 @@ class TasksTableViewController: UITableViewController {
         })
         addTaskSegue.perform()
     }
+    
+    private func filteringTasks() {
+        
+        for task in currentProject.tasks {
+            switch task.taskCategory {
+            case .new: newTasks.append(task)
+            case .inProgress: inProgressTasks.append(task)
+            case .review: reviewTasks.append(task)
+            case .done: doneTasks.append(task)
+            }
+        }
+        tableView.reloadData()
+    }
 
     // MARK: - Table view data source
 
@@ -76,13 +100,44 @@ class TasksTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        switch section {
+        case 0:
+            if newTasks.count != 0 { return newTasks.count } else { return 0 }
+        case 1:
+            if inProgressTasks.count != 0 { return inProgressTasks.count } else { return 0 }
+        case 2:
+            if reviewTasks.count != 0 { return reviewTasks.count } else { return 0 }
+        case 3:
+            if doneTasks.count != 0 { return doneTasks.count } else { return 0 }
+        default: return 0
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0: return "New"
+        case 1: return "In Progress"
+        case 2: return "Under Review"
+        case 3: return "Done"
+        default: return ""
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! TaskTableViewCell
 
-        cell.taskLabel.text = "Task"
+        var task: Task!
+        
+        switch indexPath.section {
+        case 0: task = newTasks[indexPath.row]
+        case 1: task = inProgressTasks[indexPath.row]
+        case 2: task = reviewTasks[indexPath.row]
+        case 3: task = doneTasks[indexPath.row]
+        default: break
+        }
+        
+        cell.taskLabel.text = task.name
+        cell.statusLabel.titleLabel?.text = task.taskPriority.rawValue
 
         return cell
     }
@@ -91,10 +146,6 @@ class TasksTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         
         navigationController?.pushViewController(CurrentTaskViewController(), animated: true)
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Title"
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
