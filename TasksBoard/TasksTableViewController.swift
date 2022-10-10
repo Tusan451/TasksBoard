@@ -136,8 +136,7 @@ class TasksTableViewController: UITableViewController {
         default: break
         }
         
-        cell.taskLabel.text = task.name
-        cell.statusLabel.titleLabel?.text = task.taskPriority.rawValue
+        cell.configureTheCell(for: task)
 
         return cell
     }

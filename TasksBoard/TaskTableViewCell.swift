@@ -34,17 +34,11 @@ class TaskTableViewCell: UITableViewCell {
         mark.translatesAutoresizingMaskIntoConstraints = false
         mark.layer.cornerRadius = 5
         mark.clipsToBounds = true
-        mark.backgroundColor = .blue
+        mark.backgroundColor = UIColor(red: 177/255, green: 177/255, blue: 177/255, alpha: 1)
         
         // Set attributes to statusLabel
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.isUserInteractionEnabled = false
-        var config = UIButton.Configuration.filled()
-        config.title = "Low"
-        config.attributedTitle?.font = .systemFont(ofSize: 14, weight: .medium)
-        config.cornerStyle = .capsule
-        config.baseBackgroundColor = .black
-        statusLabel.configuration = config
         
         // Add UI components
         cellView.addSubview(taskLabel)
@@ -77,6 +71,43 @@ class TaskTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         super .init(coder: coder)
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configureTheCell(for task: Task) {
+        
+        taskLabel.text = task.name
+        
+        switch task.taskCategory {
+        case .new:
+            break
+        case .inProgress:
+            mark.backgroundColor = UIColor(red: 81/255, green: 169/255, blue: 228/255, alpha: 1)
+        case .review:
+            mark.backgroundColor = UIColor(red: 242/255, green: 191/255, blue: 66/255, alpha: 1)
+        case .done:
+            mark.backgroundColor = UIColor(red: 101/255, green: 194/255, blue: 172/255, alpha: 1)
+        }
+        
+        var config = UIButton.Configuration.filled()
+        config.cornerStyle = .capsule
+        
+        switch task.taskPriority {
+        case .low:
+            config.title = task.taskPriority.rawValue
+            config.baseBackgroundColor = UIColor(red: 101/255, green: 194/255, blue: 172/255, alpha: 1)
+            config.attributedTitle?.font = .systemFont(ofSize: 16, weight: .medium)
+            statusLabel.configuration = config
+        case .medium:
+            config.title = task.taskPriority.rawValue
+            config.baseBackgroundColor = UIColor(red: 242/255, green: 191/255, blue: 66/255, alpha: 1)
+            config.attributedTitle?.font = .systemFont(ofSize: 16, weight: .medium)
+            statusLabel.configuration = config
+        case .high:
+            config.title = task.taskPriority.rawValue
+            config.baseBackgroundColor = UIColor(red: 236/255, green: 96/255, blue: 103/255, alpha: 1)
+            config.attributedTitle?.font = .systemFont(ofSize: 16, weight: .medium)
+            statusLabel.configuration = config
+        }
     }
     
 }
