@@ -12,9 +12,18 @@ let realm = try! Realm()
 
 // Class for working with Realm
 class StorageManager {
-    static func saveProject(_ projects: [Project]) {
+    
+    // Save Project to Realm
+    static func saveProject(_ project: Project) {
         try! realm.write {
-            realm.add(projects)
+            realm.add(project)
+        }
+    }
+    
+    // Edit Project name
+    static func editProject(_ project: Project, newValue: String) {
+        try! realm.write {
+            project.name = newValue
         }
     }
 }

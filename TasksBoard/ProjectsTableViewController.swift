@@ -10,7 +10,7 @@ import RealmSwift
 
 class ProjectsTableViewController: UITableViewController {
     
-    var projects: Results<Project>!
+    public var projects: Results<Project>!
     var projectToSend: Project?
     
     private let cellID = "cell"
@@ -82,8 +82,17 @@ class ProjectsTableViewController: UITableViewController {
         navigationItem.rightBarButtonItem = rightBarButtonItem
     }
     
+    // Add new project to Realm and at the tableView
     @objc private func addProject() {
         
+        alertForAddAndUpdateProject()
+//        let project = Project()
+//        project.name = newProjectDefaultName
+//
+//        DispatchQueue.main.async {
+//            StorageManager.saveProject(project)
+//            self.tableView.insertRows(at: [IndexPath(row: self.projects.count - 1, section: 0)], with: .automatic)
+//        }
     }
     
     @objc private func detailedViewAction(sender: UIButton) {
@@ -107,18 +116,17 @@ class ProjectsTableViewController: UITableViewController {
 
         let project = projects[indexPath.row]
         
-        cell.projectTextView.text = project.name
-        cell.infoLabel.text = "\(project.tasks.count) tasks"
         cell.detailButton.tag = indexPath.row
         cell.detailButton.addTarget(self, action: #selector(self.detailedViewAction), for: .touchUpInside)
-
+        cell.infoLabel.text = "\(project.tasks.count) tasks"
+        cell.projectTextLabel.text = project.name
+        
         return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
     }
-
     
     // MARK: - Navigation
 
@@ -130,4 +138,34 @@ class ProjectsTableViewController: UITableViewController {
 //            tasksVC.currentProject = project
 //        }
 //    }
+}
+
+extension ProjectsTableViewController {
+    
+    // Alert for add and update project
+    private func alertForAddAndUpdateProject() {
+        let alert = UIAlertController(title: "New Project", message: "Enter project name", preferredStyle: .alert)
+        var alertTextField: UITextField!
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+            guard let newProjectName = alertTextField.text, !newProjectName.isEmpty else { return }
+            
+            let project = Project()
+            project.name = newProjectName
+            
+            StorageManager.saveProject(project)
+            self.tableView.insertRows(at: [IndexPath(row: self.projects.count - 1, section: 0)], with: .automatic)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        
+        alert.addTextField { textField in
+            alertTextField = textField
+            alertTextField.placeholder = "Project Name"
+        }
+        present(alert, animated: true)
+    }
 }
