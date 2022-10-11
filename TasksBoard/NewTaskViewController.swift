@@ -10,6 +10,19 @@ import UIKit
 class NewTaskViewController: UIViewController, UITextViewDelegate {
     
     private let placeholder = "Enter your task here..."
+    private var newTask = Task()
+    
+    // Recieved project from TasksTableViewController
+    private let project: Project!
+    
+    init(project: Project) {
+        self.project = project
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     let taskView = UIView(frame: CGRect(x: 20, y: 0, width: UIScreen.main.bounds.size.width - 20, height: 100))
     let textView = UITextView(frame: CGRect(x: 20, y: 0, width: UIScreen.main.bounds.size.width - 20, height: 80))
@@ -36,6 +49,7 @@ class NewTaskViewController: UIViewController, UITextViewDelegate {
         setupHighLabel()
         setupCancelButton()
         setupAddButton()
+        addDoneButtonOnKeyboard()
     }
     
     private func setupNavigationBar() {
@@ -115,10 +129,13 @@ class NewTaskViewController: UIViewController, UITextViewDelegate {
         switch slider.value {
         case let x where x <= 2:
             rangSlider.minimumTrackTintColor = UIColor(red: 101/255, green: 194/255, blue: 172/255, alpha: 1)
+            newTask.taskPriority = .low
         case let x where x <= 4:
             rangSlider.minimumTrackTintColor = UIColor(red: 242/255, green: 191/255, blue: 66/255, alpha: 1)
+            newTask.taskPriority = .medium
         case let x where x <= 5:
             rangSlider.minimumTrackTintColor = UIColor(red: 236/255, green: 96/255, blue: 103/255, alpha: 1)
+            newTask.taskPriority = .high
         default:
             break
         }
@@ -165,6 +182,7 @@ class NewTaskViewController: UIViewController, UITextViewDelegate {
     
     // Set attributes to cancelButton
     private func setupCancelButton() {
+        cancelButton.addTarget(self, action: #selector(cancelButtonAction), for: .touchUpInside)
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.tintColor = .white
         var config = UIButton.Configuration.filled()
@@ -184,6 +202,7 @@ class NewTaskViewController: UIViewController, UITextViewDelegate {
     
     // Set attributes to addButton
     private func setupAddButton() {
+        addButton.addTarget(self, action: #selector(addButtonAction), for: .touchUpInside)
         addButton.translatesAutoresizingMaskIntoConstraints = false
         addButton.tintColor = .white
         var config = UIButton.Configuration.filled()
@@ -200,7 +219,6 @@ class NewTaskViewController: UIViewController, UITextViewDelegate {
         addButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         addButton.heightAnchor.constraint(equalToConstant: 43).isActive = true
     }
-    
 
     /*
     // MARK: - Navigation
@@ -211,5 +229,82 @@ class NewTaskViewController: UIViewController, UITextViewDelegate {
         // Pass the selected object to the new view controller.
     }
     */
+}
 
+
+// MARK: - Extension for Buttons actions
+
+extension NewTaskViewController {
+    
+    // Method for Cancel Button
+    @objc private func cancelButtonAction() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    // Method for AddButton
+    @objc private func addButtonAction() {
+        if newTask.name == "" {
+            taskView.layer.borderColor = CGColor(red: 236/255, green: 96/255, blue: 103/255, alpha: 1)
+            textView.text = "Enter Task Name"
+            textView.textColor = .systemRed
+        } else {
+            StorageManager.saveTask(in: project, task: newTask)
+            navigationController?.popViewController(animated: true)
+        }
+    }
+}
+
+
+// MARK: - Extension for UITextViewDelegate
+
+extension NewTaskViewController {
+    
+    // Hide keyboard on touch on the screen
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
+    }
+    
+    // Add Done Button on keyboard
+    func addDoneButtonOnKeyboard() {
+        let doneToolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        doneToolBar.barStyle = .default
+
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneButtonAction))
+
+        let items = [flexSpace, doneButton]
+        doneToolBar.items = items
+        doneToolBar.sizeToFit()
+
+        textView.inputAccessoryView = doneToolBar
+    }
+    
+    @objc private func doneButtonAction() {
+        textView.resignFirstResponder()
+    }
+    
+    // Clear placeholder text when begin editing
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        if textView.text == "" || textView.text == placeholder {
+            textView.text = nil
+            textView.textColor = .black
+        }
+        if textView.text == "Enter Task Name" {
+            textView.text = nil
+            textView.textColor = .black
+            taskView.layer.borderColor = CGColor(red: 233/255, green: 236/255, blue: 238/255, alpha: 1)
+        }
+        return true
+    }
+    
+    // Set placeholder text if text is ""
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text == "" {
+            textView.text = placeholder
+            textView.textColor = .systemGray
+        } else {
+            newTask.name = textView.text
+        }
+    }
 }

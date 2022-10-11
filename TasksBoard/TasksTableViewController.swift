@@ -11,7 +11,10 @@ import RealmSwift
 class TasksTableViewController: UITableViewController {
     
     // Recieved object from ProjectsTableViewController
-    private let currentProject: Project!
+    private var currentProject: Project!
+    
+    // Fetch Data for current project
+    private var fetchProject: Results<Project>!
     
     // Collections for filter tasks in interface
     var newTasks: List<Task> = List()
@@ -40,9 +43,21 @@ class TasksTableViewController: UITableViewController {
         // Table view cell registry
         tableView.register(TaskTableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.separatorStyle = .none
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Update Realm data with new Task added
+        fetchProject = realm.objects(Project.self).filter("name = '\(currentProject.name)'")
+        currentProject = fetchProject.first
         
         // Filtering tasks by category
         filteringTasks()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        updateTasksCategories()
     }
     
     private func setupView() {
@@ -74,8 +89,9 @@ class TasksTableViewController: UITableViewController {
     }
     
     @objc private func addTask() {
-        addTaskSegue = UIStoryboardSegue(identifier: "addTask", source: TasksTableViewController(currentProject: nil), destination: NewTaskViewController(), performHandler: {
-            self.show(NewTaskViewController(), sender: nil)
+        let newTaskVC = NewTaskViewController(project: currentProject)
+        addTaskSegue = UIStoryboardSegue(identifier: "addTask", source: TasksTableViewController(currentProject: nil), destination: newTaskVC, performHandler: {
+            self.show(self.addTaskSegue.destination, sender: nil)
         })
         addTaskSegue.perform()
     }
@@ -92,6 +108,14 @@ class TasksTableViewController: UITableViewController {
         }
         tableView.reloadData()
     }
+    
+    private func updateTasksCategories() {
+        newTasks.removeAll()
+        inProgressTasks.removeAll()
+        reviewTasks.removeAll()
+        doneTasks.removeAll()
+    }
+    
 
     // MARK: - Table view data source
 
@@ -150,15 +174,4 @@ class TasksTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 105
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

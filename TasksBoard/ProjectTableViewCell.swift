@@ -80,8 +80,4 @@ class ProjectTableViewCell: UITableViewCell, UITextViewDelegate {
         super .init(coder: coder)
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func configureTheCell(for project: Project, in tableView: UITableView) {
-       
-    }
 }

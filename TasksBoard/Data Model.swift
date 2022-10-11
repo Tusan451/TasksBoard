@@ -12,7 +12,7 @@ import RealmSwift
 class Task: Object {
     @Persisted var name: String
     @Persisted var taskCategory: TaskCategory = .new
-    @Persisted var taskPriority: TaskPriority
+    @Persisted var taskPriority: TaskPriority = .low
 }
 
 class Project: Object {

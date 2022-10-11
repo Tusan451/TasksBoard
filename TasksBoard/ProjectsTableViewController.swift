@@ -28,30 +28,14 @@ class ProjectsTableViewController: UITableViewController {
         // Table view cell registry
         tableView.register(ProjectTableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.separatorStyle = .none
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         // Init objects from Realm
         projects = realm.objects(Project.self)
-        
-//        // Create objects
-//        let projectOne = Project()
-//        projectOne.name = "Project One"
-//
-//        let projectTwo = Project(value: ["Project Two", [["First Task", TaskCategory.new, TaskPriority.low], ["Second Task", TaskCategory.new, TaskPriority.medium]]])
-//
-//        let firstTask = Task()
-//        firstTask.name = "Task One"
-//        firstTask.taskPriority = .low
-//
-//        let secondTask = Task(value: ["Task Two", TaskCategory.new, TaskPriority.medium])
-//        let thirdTask = Task(value: ["name": "Task three", "taskCategory": TaskCategory.new, "taskPriority": TaskPriority.high])
-//
-//        projectOne.tasks.append(firstTask)
-//        projectOne.tasks.insert(contentsOf: [secondTask, thirdTask], at: 1)
-//
-//        // Save objects to Realm
-//        DispatchQueue.main.async {
-//            StorageManager.saveProject([projectOne, projectTwo])
-//        }
+        tableView.reloadData()
     }
     
     private func setupView() {
@@ -84,15 +68,7 @@ class ProjectsTableViewController: UITableViewController {
     
     // Add new project to Realm and at the tableView
     @objc private func addProject() {
-        
         alertForAddAndUpdateProject()
-//        let project = Project()
-//        project.name = newProjectDefaultName
-//
-//        DispatchQueue.main.async {
-//            StorageManager.saveProject(project)
-//            self.tableView.insertRows(at: [IndexPath(row: self.projects.count - 1, section: 0)], with: .automatic)
-//        }
     }
     
     @objc private func detailedViewAction(sender: UIButton) {

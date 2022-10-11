@@ -26,4 +26,11 @@ class StorageManager {
             project.name = newValue
         }
     }
+    
+    // Save new Task in Project
+    static func saveTask(in project: Project, task: Task) {
+        try! realm.write {
+            project.tasks.append(task)
+        }
+    }
 }
