@@ -27,6 +27,15 @@ class StorageManager {
         }
     }
     
+    // Delete Project
+    static func deleteProject(_ project: Project) {
+        try! realm.write {
+            let tasks = project.tasks
+            realm.delete(tasks)
+            realm.delete(project)
+        }
+    }
+    
     // Save new Task in Project
     static func saveTask(in project: Project, task: Task) {
         try! realm.write {

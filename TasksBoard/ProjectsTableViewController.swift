@@ -80,6 +80,14 @@ class ProjectsTableViewController: UITableViewController {
         })
         detailedViewSegue.perform()
     }
+    
+    @objc private func editButtonAction(sender: UIButton) {
+        let buttonRow = sender.tag
+        let project = projects[buttonRow]
+        alertForAddAndUpdateProject(project) {
+            self.tableView.reloadRows(at: [IndexPath(row: buttonRow, section: 0)], with: .automatic)
+        }
+    }
 
     // MARK: - Table view data source
 
@@ -93,6 +101,8 @@ class ProjectsTableViewController: UITableViewController {
         let project = projects[indexPath.row]
         
         cell.detailButton.tag = indexPath.row
+        cell.editButton.tag = indexPath.row
+        cell.editButton.addTarget(self, action: #selector(self.editButtonAction), for: .touchUpInside)
         cell.detailButton.addTarget(self, action: #selector(self.detailedViewAction), for: .touchUpInside)
         cell.infoLabel.text = "\(project.tasks.count) tasks"
         cell.projectTextLabel.text = project.name
@@ -104,33 +114,51 @@ class ProjectsTableViewController: UITableViewController {
         return 120
     }
     
-    // MARK: - Navigation
+    
+    // MARK: - Table view Delegate
+    
+    // Delete Project from the data and tableView
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        guard editingStyle == .delete else { return }
+        
+        let project = projects[indexPath.row]
+        
+        StorageManager.deleteProject(project)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
 
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        guard segue.identifier == "DetailedView" else { return }
-//        if let indexPath = tableView.indexPathForSelectedRow {
-//            let project = projects[indexPath.row]
-//            let tasksVC = segue.destination as! TasksTableViewController
-//            tasksVC.currentProject = project
-//        }
-//    }
 }
 
 extension ProjectsTableViewController {
     
     // Alert for add and update project
-    private func alertForAddAndUpdateProject() {
-        let alert = UIAlertController(title: "New Project", message: "Enter project name", preferredStyle: .alert)
+    private func alertForAddAndUpdateProject(_ project: Project? = nil, complition: (() -> Void)? = nil) {
+        
+        var title = "New Project"
+        var doneButton = "Save"
+        
+        if project != nil {
+            title = "Edit Project"
+            doneButton = "Update"
+        }
+        
+        let alert = UIAlertController(title: title, message: "Enter project name", preferredStyle: .alert)
         var alertTextField: UITextField!
         
-        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+        let saveAction = UIAlertAction(title: doneButton, style: .default) { _ in
             guard let newProjectName = alertTextField.text, !newProjectName.isEmpty else { return }
             
-            let project = Project()
-            project.name = newProjectName
-            
-            StorageManager.saveProject(project)
-            self.tableView.insertRows(at: [IndexPath(row: self.projects.count - 1, section: 0)], with: .automatic)
+            if let project = project {
+                StorageManager.editProject(project, newValue: newProjectName)
+                if complition != nil { complition!() }
+            } else {
+                let project = Project()
+                project.name = newProjectName
+                
+                StorageManager.saveProject(project)
+                self.tableView.insertRows(at: [IndexPath(row: self.projects.count - 1, section: 0)], with: .automatic)
+            }
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
@@ -142,6 +170,11 @@ extension ProjectsTableViewController {
             alertTextField = textField
             alertTextField.placeholder = "Project Name"
         }
+        
+        if let project = project {
+            alertTextField.text = project.name
+        }
+        
         present(alert, animated: true)
     }
 }
