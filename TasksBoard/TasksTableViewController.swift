@@ -153,10 +153,18 @@ class TasksTableViewController: UITableViewController {
         var task: Task!
         
         switch indexPath.section {
-        case 0: task = newTasks[indexPath.row]
-        case 1: task = inProgressTasks[indexPath.row]
-        case 2: task = reviewTasks[indexPath.row]
-        case 3: task = doneTasks[indexPath.row]
+        case 0:
+            task = newTasks[indexPath.row]
+            cell.cellView.alpha = 1
+        case 1:
+            task = inProgressTasks[indexPath.row]
+            cell.cellView.alpha = 1
+        case 2:
+            task = reviewTasks[indexPath.row]
+            cell.cellView.alpha = 1
+        case 3:
+            task = doneTasks[indexPath.row]
+            cell.cellView.alpha = 0.6
         default: break
         }
         

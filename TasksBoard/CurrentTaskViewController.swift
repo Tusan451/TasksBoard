@@ -141,20 +141,25 @@ class CurrentTaskViewController: UIViewController, UITextViewDelegate {
         actionButton.translatesAutoresizingMaskIntoConstraints = false
         actionButton.tintColor = .white
         
+        var config = UIButton.Configuration.filled()
         var buttonTitle = ""
         
         switch currentTask.taskCategory {
-        case .new: buttonTitle = "To Work"
-        case .inProgress: buttonTitle = "To Review"
-        case .review: buttonTitle = "Done"
+        case .new:
+            buttonTitle = "To Work"
+            config.baseBackgroundColor = UIColor(red: 81/255, green: 169/255, blue: 228/255, alpha: 1)
+        case .inProgress:
+            buttonTitle = "To Review"
+            config.baseBackgroundColor = UIColor(red: 242/255, green: 172/255, blue: 66/255, alpha: 1)
+        case .review:
+            buttonTitle = "Done"
+            config.baseBackgroundColor = UIColor(red: 101/255, green: 194/255, blue: 172/255, alpha: 1)
         case .done: actionButton.isHidden = true
         }
         
-        var config = UIButton.Configuration.filled()
         config.title = buttonTitle
         config.attributedTitle?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         config.cornerStyle = .capsule
-        config.baseBackgroundColor = UIColor(red: 81/255, green: 169/255, blue: 228/255, alpha: 1)
         actionButton.configuration = config
         
         self.view.addSubview(actionButton)
@@ -179,6 +184,8 @@ class CurrentTaskViewController: UIViewController, UITextViewDelegate {
         revisionButton.configuration = config
         
         self.view.addSubview(revisionButton)
+        
+        revisionButton.addTarget(self, action: #selector(revisionButtonAction), for: .touchUpInside)
         
         revisionButton.bottomAnchor.constraint(equalTo: actionButton.topAnchor, constant: -12).isActive = true
         revisionButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
@@ -214,6 +221,12 @@ class CurrentTaskViewController: UIViewController, UITextViewDelegate {
                 break
             }
         }
+    }
+    
+    // Action for revision button
+    @objc private func revisionButtonAction() {
+        StorageManager.editTaskCategory(currentTask, newValue: .inProgress)
+        navigationController?.popViewController(animated: true)
     }
     
     // Method for delete Task
