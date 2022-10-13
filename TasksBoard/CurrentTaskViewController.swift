@@ -218,7 +218,7 @@ class CurrentTaskViewController: UIViewController, UITextViewDelegate {
     
     // Method for delete Task
     @objc private func deleteTask() {
-        
+        alertForDeleteTask(currentTask)
     }
 }
 
@@ -276,3 +276,28 @@ extension CurrentTaskViewController {
         }
     }
 }
+
+
+// MARK: - Extension for UIAlertController
+
+extension CurrentTaskViewController {
+    
+    // Alert for confirmation deleting task
+    private func alertForDeleteTask(_ task: Task) {
+        
+        let alert = UIAlertController(title: "Delete Task", message: "Are you sure you want to delete this task?", preferredStyle: .actionSheet)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+            StorageManager.deleteTask(task)
+            self.navigationController?.popViewController(animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
+    }
+}
+
