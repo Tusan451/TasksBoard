@@ -73,10 +73,11 @@ class ProjectTableViewCell: UITableViewCell, UITextViewDelegate {
         cellView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
         cellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
         
-        projectTextLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 0).isActive = true
+        projectTextLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 12).isActive = true
         projectTextLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 20).isActive = true
         projectTextLabel.trailingAnchor.constraint(equalTo: editButton.leadingAnchor, constant: -16).isActive = true
         projectTextLabel.bottomAnchor.constraint(equalTo: infoLabel.topAnchor, constant: -8).isActive = true
+        projectTextLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         infoLabel.topAnchor.constraint(equalTo: projectTextLabel.bottomAnchor, constant: 8).isActive = true
         infoLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 20).isActive = true
@@ -86,10 +87,14 @@ class ProjectTableViewCell: UITableViewCell, UITextViewDelegate {
         detailButton.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
         detailButton.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -16).isActive = true
         detailButton.leadingAnchor.constraint(equalTo: editButton.trailingAnchor, constant: 8).isActive = true
+        detailButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        detailButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
         editButton.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
         editButton.leadingAnchor.constraint(equalTo: projectTextLabel.trailingAnchor, constant: 16).isActive = true
         editButton.trailingAnchor.constraint(equalTo: detailButton.leadingAnchor, constant: -8).isActive = true
+        editButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        editButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
     }
     
     required init?(coder: NSCoder) {

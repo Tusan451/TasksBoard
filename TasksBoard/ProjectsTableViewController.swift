@@ -126,8 +126,9 @@ class ProjectsTableViewController: UITableViewController {
         
         StorageManager.deleteProject(project)
         tableView.deleteRows(at: [indexPath], with: .automatic)
-    }
+        tableView.reloadRows(at: [indexPath], with: .none)
 
+    }
 }
 
 extension ProjectsTableViewController {

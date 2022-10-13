@@ -42,4 +42,18 @@ class StorageManager {
             project.tasks.append(task)
         }
     }
+    
+    // Edit Task Category
+    static func editTaskCategory(_ task: Task, newValue: TaskCategory) {
+        try! realm.write {
+            task.taskCategory = newValue
+        }
+    }
+    
+    // Edit Task Name
+    static func editTaskName(_ task: Task, newValue: String) {
+        try! realm.write {
+            task.name = newValue
+        }
+    }
 }

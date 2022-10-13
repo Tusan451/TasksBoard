@@ -168,7 +168,18 @@ class TasksTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        navigationController?.pushViewController(CurrentTaskViewController(), animated: true)
+        var task: Task!
+        
+        switch indexPath.section {
+        case 0: task = newTasks[indexPath.row]
+        case 1: task = inProgressTasks[indexPath.row]
+        case 2: task = reviewTasks[indexPath.row]
+        case 3: task = doneTasks[indexPath.row]
+        default: break
+        }
+        
+        let currentTaskVC = CurrentTaskViewController(currentTask: task)
+        navigationController?.pushViewController(currentTaskVC, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
